@@ -175,7 +175,7 @@ public class MRubyWrapperHelper
         
         foreach (var group in methodGroups)
         {
-            options.DefineClassMethod(Mrb.Intern(group.Key), (_, self) =>
+            options.DefineClassMethod(Mrb.Intern(group.Key), (_, _) =>
             {
                 var result = Invoke(null, group, out var method);
                 return ((MethodInfo)method).ReturnType == typeof(void) ? MRubyValue.Nil : ConvertResult(result);
@@ -237,7 +237,7 @@ public class MRubyWrapperHelper
             {
                 var getterName = propertyAttribute?.QuestionMarkOnGetter == true ? name + "?" : name;
                 var methodExecutionData =  GetMethodExecutionData(getter);
-                options.DefineClassMethod(Mrb.Intern(getterName), (_, self) =>
+                options.DefineClassMethod(Mrb.Intern(getterName), (_, _) =>
                 {
                     if (!TryConverterParameters(methodExecutionData, out var parameters))
                     {
@@ -252,7 +252,7 @@ public class MRubyWrapperHelper
             if (setter != null && setter.IsPublic)
             {
                 var methodExecutionData =  GetMethodExecutionData(setter);
-                options.DefineClassMethod(Mrb.Intern(name + "="), (_, self) =>
+                options.DefineClassMethod(Mrb.Intern(name + "="), (_, _) =>
                 {
                     if (!TryConverterParameters(methodExecutionData, out var parameters))
                     {
