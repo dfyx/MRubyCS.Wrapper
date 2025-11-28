@@ -320,10 +320,7 @@ public class MRubyWrapperHelper
 
         if (m_classes.TryGetValue(result.GetType(), out var rubyClass))
         {
-            // We need to access an internal constructor to create an object without calling its constructor
-            var rubyObject = (RObject)typeof(RObject)
-                .GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, [typeof(MRubyVType), typeof(RClass)])!
-                .Invoke([rubyClass.InstanceVType, rubyClass]);
+            var rubyObject = new RObject(rubyClass);
             SetNativeObject(rubyObject, result);
             return rubyObject;
         }
